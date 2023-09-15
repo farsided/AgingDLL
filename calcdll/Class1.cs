@@ -10,7 +10,7 @@ namespace calcdll
     {
         public static void Main()
         {
-
+            Console.WriteLine($"{new Age().Years}");
         }
 
         enum DayType
