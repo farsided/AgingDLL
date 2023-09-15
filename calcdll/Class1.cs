@@ -8,6 +8,11 @@ namespace calcdll
 {
     public class Age
     {
+        public static void Main()
+        {
+
+        }
+
         enum DayType
         {
             Weekday,
@@ -108,4 +113,6 @@ namespace calcdll
             return ((DateTime)End - start).Days;
         }
     }
+
+
 }
