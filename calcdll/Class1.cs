@@ -105,9 +105,12 @@ namespace calcdll
                 {
                     if ((dateDiff.Days >= DateTime.DaysInMonth(current.Year, current.Month)) || (current.Year <= end.Year))
                     {
-                        current = current.AddMonths(1);
-                        monthCount++;
-                        dateDiff = end - current;
+                        if (current < end.AddMonths(-1))
+                        {
+                            current = current.AddMonths(1);
+                            dateDiff = end - current;
+                            monthCount++;
+                        }
                     }
                 }
                 if (current.Year == end.Year && month == end.Month - 1)
@@ -125,8 +128,7 @@ namespace calcdll
 
         private int GetDay(DateTime start, DateTime? End = null)
         {
-            current = current.AddDays(((DateTime)End - start).Days);
-            return ((DateTime)End - start).Days;
+            return ((DateTime)End - start).Days;//(int)Math.Floor((((DateTime)End - start).TotalHours / 24));
         }
     }
 }
