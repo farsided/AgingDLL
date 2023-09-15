@@ -10,6 +10,7 @@ namespace calcdll
     {
         public DateTime start { get; set; }
         public DateTime end { get; set; }
+        public DateTime current { get; set; }
 
         public int Years { get; set; }
         public int Months { get; set; }
@@ -19,65 +20,31 @@ namespace calcdll
         public int TotalMonths { get { return GetMonth(start, end); } }
         public int TotalDays { get { return GetDay(start, end); } }
 
+        public Age()
+        {
+
+        }
+
         public Age(DateTime start, DateTime? End = null)
         {
             DateTime end = (End ?? DateTime.Now);
-            GetAge(start, end);
+            Init(start, end);
         }
 
-        public void GetAge(DateTime start, DateTime? End = null)
+        public void Init(DateTime start, DateTime? End = null)
         {
             DateTime end = (End ?? DateTime.Now);
-            DateTime current = start;
             TimeSpan dateDiff = end - start;
-            int maxYear = end.Year;
+            current = start;
 
-            Years = 0;
-            Months = 0;
-            Days = 0;
-
-            //year
-            for (int year = current.Year; year < maxYear; year++)
-            {
-                bool isLeapYear = DateTime.IsLeapYear(current.Year);
-                if (((isLeapYear && (dateDiff.TotalDays >= 366)) ||
-                            (!isLeapYear && (dateDiff.TotalDays >= 365))))
-                {
-                    current = current.AddYears(1);
-                    Years++;
-                }
-            }
-
-            //month
-            for (int month = current.Month; month <= ((current.Year == end.Year) ? end.Month : 12);)
-            {
-                if (current.Month != (end.Month))
-                {
-                    if ((dateDiff.Days >= DateTime.DaysInMonth(current.Year, current.Month)))
-                    {
-                        current = current.AddMonths(1);
-                        Months++;
-                        dateDiff = end - current;
-                    }
-
-                }
-                if (current.Year == end.Year && month == end.Month - 1)
-                {
-                    break;
-                }
-                else
-                {
-                    month = ((month % 12) + 1);
-                }
-            }
-
-            //day
-            Days = (end - current).Days;
+            Years = GetYear(current, end);
+            Months = GetMonth(current, end);
+            Days = GetDay(current, end);
 
             return;
         }
 
-        public static int GetYear(DateTime start, DateTime? End = null)
+        public int GetYear(DateTime start, DateTime? End = null)
         {
             DateTime end = (End ?? DateTime.Now);
             int yearCount = 0;
@@ -88,17 +55,18 @@ namespace calcdll
                             (!isLeapYear && ((end - start).TotalDays >= 365))))
                 {
                     start = start.AddYears(1);
+                    current = start;
                     yearCount++;
                 }
             }
             return yearCount;
         }
 
-        public static int GetMonth(DateTime start, DateTime? End = null)
+        public int GetMonth(DateTime start, DateTime? End = null)
         {
             DateTime end = (End ?? DateTime.Now);
             TimeSpan dateDiff = end - start;
-            DateTime current = start;
+            current = start;
             int monthCount = 0;
             for (int month = current.Month; month <= ((current.Year == end.Year) ? end.Month : 12);)
             {
@@ -124,8 +92,9 @@ namespace calcdll
             return monthCount;
         }
 
-        public static int GetDay(DateTime start, DateTime? End = null)
+        public int GetDay(DateTime start, DateTime? End = null)
         {
+            current = current.AddDays(((DateTime)End - start).Days);
             return ((DateTime)End - start).Days;
         }
     }
