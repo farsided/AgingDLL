@@ -8,6 +8,16 @@ namespace calcdll
 {
     public class Age
     {
+        enum DayType
+        {
+            Weekday,
+            Weekend,
+            Workday,
+            SpecialHoliday,
+            RegularHoliday,
+            Absentday
+        }
+
         public DateTime start { get; set; }
         public DateTime end { get; set; }
         public DateTime current { get; set; }
