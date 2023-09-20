@@ -164,7 +164,7 @@ namespace CalcDll
         }
 
         /// <summary>
-        /// The list of key-value pair of units in abbrev and unit values
+        /// The list of key-value pair of units abbreviation and unit values
         /// </summary>
         public virtual List<KeyValuePair<string, int>> TimeUnitsShort
         {
