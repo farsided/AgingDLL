@@ -78,15 +78,15 @@ namespace CalcDll
         /// <summary>
         /// Year value in time span betweem DateTime 'start' and 'end' properties disregarding other the object property values
         /// </summary>
-        public int TotalYears { get { return GetYear(start, end); } }
+        public Task<int> TotalYears { get { return GetYear(start, end); } }
         /// <summary>
         /// Month value in time span betweem DateTime 'start' and 'end' properties disregarding other the object property values
         /// </summary>
-        public int TotalMonths { get { return GetMonth(start, end); } }
+        public Task<int> TotalMonths { get { return GetMonth(start, end); } }
         /// <summary>
         /// Day value in time span betweem DateTime 'start' and 'end' properties disregarding other the object property values
         /// </summary>
-        public int TotalDays { get { return GetDay(start, end); } }
+        public Task<int> TotalDays { get { return GetDay(start, end); } }
 
         /// <summary>
         /// Count of no. of units included in the GetString() private member function
@@ -131,15 +131,15 @@ namespace CalcDll
         /// <br/>
         /// If null, will be equal to the current date and time.
         /// </param>
-        private void Init(DateTime start, DateTime? End = null)
+        private async Task Init(DateTime start, DateTime? End = null)
         {
             current = start;
             this.start = start;
             this.end = (End ?? DateTime.Now);
 
-            Years = GetYear(current, end);
-            Months = GetMonth(current, end);
-            Days = GetDay(current, end);
+            Years = await GetYear(current, end);
+            Months = await GetMonth(current, end);
+            Days = await GetDay(current, end);
         }
 
         /// <summary>
@@ -253,25 +253,28 @@ namespace CalcDll
         }
 
 
-        public int GetYear(DateTime start, DateTime? End = null)
+        public async Task<int> GetYear(DateTime start, DateTime? End = null)
         {
             DateTime end = (End ?? DateTime.Now);
             int yearCount = 0;
-            for (int year = start.Year; year < end.Year; year++)
+            await Task.Run(() =>
             {
-                bool isLeapYear = DateTime.IsLeapYear(start.Year);
-                if (((isLeapYear && ((end - start).TotalDays >= 366)) ||
-                            (!isLeapYear && ((end - start).TotalDays >= 365))))
+                for (int year = start.Year; year < end.Year; year++)
                 {
-                    start = start.AddYears(1);
-                    current = start;
-                    yearCount++;
+                    bool isLeapYear = DateTime.IsLeapYear(start.Year);
+                    if (((isLeapYear && ((end - start).TotalDays >= 366)) ||
+                                (!isLeapYear && ((end - start).TotalDays >= 365))))
+                    {
+                        start = start.AddYears(1);
+                        current = start;
+                        yearCount++;
+                    }
                 }
-            }
+            });
             return yearCount;
         }
 
-        public int GetMonth(DateTime start, DateTime? End = null)
+        public async Task<int> GetMonth(DateTime start, DateTime? End = null)
         {
             DateTime end = (End ?? DateTime.Now);
             TimeSpan dateDiff = end - start;
@@ -304,7 +307,7 @@ namespace CalcDll
             return monthCount;
         }
 
-        public int GetDay(DateTime start, DateTime? End = null)
+        public async Task<int> GetDay(DateTime start, DateTime? End = null)
         {
             int dayDiff = ((DateTime)End - start).Days;
             current = current.AddDays(dayDiff);
