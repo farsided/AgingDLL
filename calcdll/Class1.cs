@@ -45,6 +45,14 @@ namespace CalcDll
         /// </summary>
         public int Days { get; set; }
 
+        /// <summary>
+        /// Gets the start date defined from constructor Age(DateTime start, DateTime? End = null) or Init(DateTime start, DateTime? End = null)
+        /// </summary>
+        public DateTime Start { get { return start; } }
+        /// <summary>
+        /// Gets the end date defined from constructor Age(DateTime start, DateTime? End = null) or Init(DateTime start, DateTime? End = null)
+        /// </summary>
+        public DateTime End { get { return end; } }
 
         /// <summary>
         /// Evaluates to : Months / 4
@@ -177,7 +185,7 @@ namespace CalcDll
         }
 
         /// <summary>
-        /// Gets the list of units and associate the values of properties with it
+        /// Sets the list of units and associate the values of properties with it in an english phrase
         /// </summary>
         /// <param name="unitCountMax"></param>
         /// <param name="suffix"></param>
@@ -188,7 +196,7 @@ namespace CalcDll
         /// <returns>
         /// String
         /// </returns>
-        private string SetString(int unitCountMax, string suffix = "s", string replacement = "&", char separator = ',', int? unitCountMin = null, bool unitLong = true)
+        public string SetString(int unitCountMax, string suffix = "s", string replacement = "&", char separator = ',', int? unitCountMin = null, bool unitLong = true)
         {
             int unitAccumulator = 0;
             List<KeyValuePair<string, int>> timeUnits = unitLong ? TimeUnits : TimeUnitsShort;
@@ -198,6 +206,17 @@ namespace CalcDll
             return str;
         }
 
+        /// <summary>
+        /// Sets the list of units and associate the values of properties
+        /// </summary>
+        /// <param name="unitCountMax"></param>
+        /// <param name="timeUnits"></param>
+        /// <param name="unitAccumulator"></param>
+        /// <param name="suffix"></param>
+        /// <param name="separator"></param>
+        /// <param name="unitCounter"></param>
+        /// <param name="unitLong"></param>
+        /// <returns></returns>
         private string InitializeString(int unitCountMax, List<KeyValuePair<string, int>> timeUnits, ref int unitAccumulator, string suffix = "s", char separator = ',', int unitCounter = 0, bool unitLong = true)
         {
             string str = null;
@@ -217,6 +236,13 @@ namespace CalcDll
             return str;
         }
 
+        /// <summary>
+        /// Sets the list of units in an english phrase
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="objCounter"></param>
+        /// <param name="replacement"></param>
+        /// <param name="separator"></param>
         private void Compose(ref string str, int objCounter, string replacement = "&", char separator = ',')
         {
             if (objCounter > 1)
