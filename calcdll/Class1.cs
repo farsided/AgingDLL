@@ -137,9 +137,9 @@ namespace CalcDll
             this.start = start;
             this.end = (End ?? DateTime.Now);
 
-            Years = await GetYear(current, end);
-            Months = await GetMonth(current, end);
-            Days = await GetDay(current, end);
+            Years = GetYear(current, end);
+            Months = GetMonth(current, end);
+            Days = GetDay(current, end);
         }
 
         /// <summary>
@@ -307,7 +307,20 @@ namespace CalcDll
             return monthCount;
         }
 
-        public async Task<int> GetDay(DateTime start, DateTime? End = null)
+
+        public int GetDay(DateTime start, DateTime? End = null)
+        {
+            int dayDiff = 0;
+            Task task = Task.Run(async() => {
+                dayDiff = ((DateTime)End - start).Days;
+                current = current.AddDays(dayDiff);
+                await GetDayAsync(start, end);
+            });
+
+            return dayDiff;
+        }
+
+        public async Task<int> GetDayAsync(DateTime start, DateTime? End = null)
         {
             int dayDiff = ((DateTime)End - start).Days;
             current = current.AddDays(dayDiff);
