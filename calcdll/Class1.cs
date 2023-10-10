@@ -109,21 +109,6 @@ namespace CalcDll
         public int TotalDays { get { return GetDay(start, end); } }
 
         /// <summary>
-        /// Year value in time span betweem DateTime 'start' and 'end' properties disregarding other the object property values
-        /// </summary>
-        //public Task<int> TotalYearsAsync { get { return GetYearAsync(start, end); } }
-        ///// <summary>
-        ///// Month value in time span betweem DateTime 'start' and 'end' properties disregarding other the object property values
-        ///// </summary>
-        //public Task<int> TotalMonthsAsync { get { return GetMonthAsync(start, end); } }
-        ///// <summary>
-        ///// Day value in time span betweem DateTime 'start' and 'end' properties disregarding other the object property values
-        ///// </summary>
-        //public Task<int> TotalDaysAsync { get { return GetDayAsync(start, end); } }
-
-
-
-        /// <summary>
         /// Count of no. of units included in the GetString() private member function
         /// </summary>
         public int UnitCount { get; set; }
@@ -152,11 +137,6 @@ namespace CalcDll
             Init(start, End);
         }
 
-        //public async Task AgeAsync(DateTime start, DateTime? End = null)
-        //{
-        //    await Task.Run(async()=>await InitAsync(start, End));
-        //}
-
         /// <summary>
         /// <para>
         /// Initializes the object's 'Years', 'Months' and 'Days' properties. Invoke to reevaluate properties.
@@ -181,16 +161,6 @@ namespace CalcDll
             Months = GetMonth(current, end);
             Days = GetDay(current, end);
         }
-        //private async Task InitAsync(DateTime start, DateTime? End = null)
-        //{
-        //    current = start;
-        //    this.start = start;
-        //    this.end = (End ?? DateTime.Now);
-
-        //    Years = GetYear(current, end);
-        //    Months = GetMonth(current, end);
-        //    Days = GetDay(current, end);
-        //}
 
         /// <summary>
         /// The list of key-value pair of units in words and unit values
@@ -320,27 +290,6 @@ namespace CalcDll
             return yearCount;
         }
 
-        //public async Task<int> GetYearAsync(DateTime start, DateTime? End = null)
-        //{
-        //    DateTime end = (End ?? DateTime.Now);
-        //    int yearCount = 0;
-        //    await Task.Run(() =>
-        //    {
-        //        for (int year = start.Year; year < end.Year; year++)
-        //        {
-        //            bool isLeapYear = DateTime.IsLeapYear(start.Year);
-        //            if (((isLeapYear && ((end - start).TotalDays >= 366)) ||
-        //                        (!isLeapYear && ((end - start).TotalDays >= 365))))
-        //            {
-        //                start = start.AddYears(1);
-        //                current = start;
-        //                yearCount++;
-        //            }
-        //        }
-        //    });
-        //    return yearCount;
-        //}
-
         public int GetMonth(DateTime start, DateTime? End = null)
         {
             DateTime end = (End ?? DateTime.Now);
@@ -374,62 +323,12 @@ namespace CalcDll
             return monthCount;
         }
 
-        //public async Task<int> GetMonthAsync(DateTime start, DateTime? End = null)
-        //{
-        //    DateTime end = (End ?? DateTime.Now);
-        //    TimeSpan dateDiff = end - start;
-        //    current = start;
-        //    int monthCount = 0;
-        //    await Task.Run(() =>
-        //    {
-        //        for (int month = current.Month; month <= ((current.Year == end.Year) ? end.Month : 12);)
-        //        {
-        //            if (((current.Year == end.Year) && (current.Month != (end.Month))) || ((current.Year < end.Year)))
-        //            {
-        //                if ((dateDiff.Days >= DateTime.DaysInMonth(current.Year, current.Month)) || (current.Year <= end.Year))
-        //                {
-        //                    if (current < end.AddMonths(-1))
-        //                    {
-        //                        current = current.AddMonths(1);
-        //                        dateDiff = end - current;
-        //                        monthCount++;
-        //                    }
-        //                }
-        //            }
-        //            if (current.Year == end.Year && month == end.Month - 1)
-        //            {
-        //                break;
-        //            }
-        //            else
-        //            {
-        //                month = ((month % 12) + 1);
-        //            }
-        //        }
-        //    });
-        //    return monthCount;
-        //}
-
-
         public int GetDay(DateTime start, DateTime? End = null)
         {
             int dayDiff = 0;
-            //Task task = Task.Run(async() => {
-                dayDiff = ((DateTime)End - start).Days;
-                current = current.AddDays(dayDiff);
-                //await GetDayAsync(start, end);
-            //});
-
+            dayDiff = ((DateTime)End - start).Days;
+            current = current.AddDays(dayDiff);
             return dayDiff;
         }
-
-        //public async Task<int> GetDayAsync(DateTime start, DateTime? End = null)
-        //{
-        //    int dayDiff = ((DateTime)End - start).Days;
-        //    await Task.Run(() =>
-        //    {
-        //        current = current.AddDays(dayDiff);
-        //    });
-        //    return dayDiff;
-        //}
     }
 }
